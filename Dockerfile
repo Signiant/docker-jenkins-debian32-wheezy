@@ -49,6 +49,9 @@ RUN echo "Defaults:$BUILD_USER !requiretty" >> /etc/sudoers
 # Add user to sudoers with NOPASSWD
 RUN echo "$BUILD_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+# Install Java
+RUN apt-get -y install openjdk-7-jdk
+
 # Install ant
 ENV ANT_VERSION 1.9.5
 RUN cd && \
