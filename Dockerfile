@@ -4,6 +4,10 @@ MAINTAINER devops@signiant.com
 ENV BUILD_USER bldmgr
 ENV BUILD_USER_GROUP users
 
+# Set the timezone
+RUN sed -ri '/ZONE=/c ZONE="America\/New York"' /etc/sysconfig/clock
+RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
+
 # Update everything installed
 RUN apt-get -y update
 RUN apt-get -y upgrade
@@ -82,3 +86,17 @@ RUN chmod 700 /home/$BUILD_USER/.ssh
 RUN mkdir -p /opt/corp/local/ant/bin
 RUN ln -s /usr/bin/ant /opt/corp/local/ant/bin/ant
 RUN chown -R $BUILD_USER:$BUILD_USER_GROUP /opt/corp
+
+EXPOSE 22
+
+# This entry will either run this container as a jenkins slave or just start SSHD
+# If we're using the slave-on-demand, we start with SSH (the default)
+
+# Default Jenkins Slave Name
+ENV SLAVE_ID JAVA_NODE
+ENV SLAVE_OS Linux
+
+ADD start.sh /
+RUN chmod 777 /start.sh
+
+CMD ["sh", "/start.sh"]
