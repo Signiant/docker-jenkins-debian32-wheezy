@@ -5,7 +5,6 @@ ENV BUILD_USER bldmgr
 ENV BUILD_USER_GROUP users
 
 # Set the timezone
-RUN sed -ri '/ZONE=/c ZONE="America\/New York"' /etc/sysconfig/clock
 RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
 
 # Update everything installed
