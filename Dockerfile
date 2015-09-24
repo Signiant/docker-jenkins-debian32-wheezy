@@ -7,6 +7,10 @@ ENV BUILD_USER_GROUP users
 # Set the timezone
 RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
 
+# Set the default locale
+COPY locale /etc/default/locale
+RUN chmod a+r /etc/default/locale
+
 # Update everything installed
 RUN apt-get -y update
 RUN apt-get -y upgrade
